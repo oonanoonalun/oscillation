@@ -1,0 +1,33 @@
+open terminal from Applications/Utilities/Terminal.app
+navigate to occilation folder:
+cd ~/Desktop/Programming/oscillationScratch
+
+Committing changes to github is 3 steps: Stage changes, Commit Them, Push commits
+
+1 Stage changes (choose what changes to commit)
+
+
+Use `git add` to add changes
+
+git add $filename # Add all changes to $filename
+
+git add -p # go through every change one at a time and prompt whether to stage, skip, etc
+
+git add -i # interactive interface for updating what is staged
+# use option `4 add untracked` to add new files to the repo
+# use option `2 update` to add changes
+# use option `3 revert` to unstage a change
+
+1.1 review changes:
+git diff --staged # Will show all changes staged for the current commit, review that they are the change to you want to commit.
+
+
+2 Commit changes:
+git commit -m "This is a message for this commit, e.g., I fixed the broken thing."
+
+3 Push changes to github:
+git push # Once this succeeds other people can view the commits.
+
+
+
+
