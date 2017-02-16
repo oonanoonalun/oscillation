@@ -13,10 +13,10 @@
 //                      "findNeighborsColor" is being sent the currently-being-drawn node's neighbors list.
 //                      "findNeighborsColor," as demonstrated by the console.log line, seems to be working.
 
-
-
-
-
+//I think I would like to rewrite some of this so that:
+//	- Each cell (node) had its own array of oscillators
+//		- each of which can have parameters sent to it
+//			- that need to pick up at its current brightness so that they don't "pop" when changes are made.
 
 
 
@@ -92,9 +92,6 @@ function toHexColor(color) {
                 }
         }
         return '#' + color[0] + color[1] + color[2];        //this doesn't add their values only because they've already been made into strings?
-}
-function toDecColor(hexColor) {
-        
 }
 
 //for adding two colors together
@@ -326,7 +323,7 @@ makeNodes(12, nodes);
 
 //found this function online
 //function hexToDec(hexNumber) {       //maybe would work if I could remove the "#" in front of the color.
-//        return parseInt(hexNumber,16);
+//        return parseInt('#A0'.substring(1),16)
 //}
 
 //MAIN LOOP
