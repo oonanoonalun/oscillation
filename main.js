@@ -8,41 +8,7 @@ var context = canvas.getContext('2d');
 
 
 
-//the titles stuff is for a story, not the game
-var titlesWords = [];
-titlesWords[0] = 'sounding';
-titlesWords[1] = 'fathom';
-//titlesWords[2] = 'depth';
-titlesWords[3] = 'gradient';
-titlesWords[4] = 'slope';
-titlesWords[5] = 'auto';
-//titlesWords[6] = 'grade';
-//titlesWords[7] = 'deep';
 
-var titlesWordsGood = [];
-
-function sortTitlesWords(wordsListUnsorted, wordsListSorted) {
-    for (var i = 0; i < wordsListUnsorted.length; i++) {
-        if (wordsListUnsorted[i] !== undefined) {
-            wordsListSorted.push(wordsListUnsorted[i]);
-        }
-    }
-}
-
-function makeRandomTitles(wordsList) {
-    for (var i = 0; i < wordsList.length; i++) {
-        for (var j = 0; j < wordsList.length; j++) {
-            if (i !== j) {
-                console.log(wordsList[i] + ' ' + wordsList[j]);
-            }
-        }
-    }
-}
-
-
-
-sortTitlesWords(titlesWords, titlesWordsGood);
-//makeRandomTitles(titlesWordsGood);
 
 //MAIN LOOP
 function mainLoop() {
@@ -52,9 +18,9 @@ function mainLoop() {
     updateImpulsesList(impulses);
     buttonsMakeImpulses();
     if (impulses[0] !== null) {
-        console.log(impulses[0].cellsAffected);
+    //    console.log(impulses[0].cellsAffected[0].color);
     }
-    drawAllCells(cells);
+    drawAllCells(cells, impulses, fallThresholds);
     requestAnimFrame();
     if (frameCounter % 90 === 0) {  //show fps every three seconds
         console.log('FPS: ' + fps.toFixed(0));

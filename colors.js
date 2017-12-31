@@ -20,17 +20,6 @@ function hexToDec(hexNumber) {
         return decColor;
 }
 
-//this is an old version just kept in case the update I did to the "real" version doesn't work (I took out the line that removed the "#" symbol and replaced its function by having the operations happen on characters +1 from what they used to happen on.) )
-function oldhexToDec(hexNumber) {       //maybe would work if I could remove the "#" in front of the color.
-        var decColor = [];
-        hexNumber = hexNumber.replace('#', '');
-        for (var i = 0; i < 3; i++) {
-                decColor[i] = hexNumber.substring((i * 2 + 1), ((i * 2) + 3));
-                decColor[i] = parseInt(decColor[i], 16);
-        }
-        return decColor;
-}
-
 
 function capColorBrightness(color, maxColor) {
     for (var i = 0; i < 3; i++) {
@@ -200,7 +189,7 @@ function findOscillatorsColor(oscillatorsList) {    //the oscillatorsList passed
         }
 }
 
-function findImpulsesColor (cell) {
+function OLDfindImpulsesColor(cell) {
         var newImpulsesColor = [0, 0, 0],
         impulsesCounter = 0;
         for (var i = 0; i < impulses.length; i++) {
@@ -214,6 +203,54 @@ function findImpulsesColor (cell) {
                 }
         }
         return divideColorByNumber(newImpulsesColor, Math.max(1, impulsesCounter));
+}
+
+function findImpulsesColor(impulsesList) {      //this will return a single color that is the sum of the colors of an array of impulses
+        if (impulsesList.length === 1) {        //if there's only one impulse in the list
+                return impulsesList[0].currentColor;    //then return its current color
+        }
+        var newImpulsesColor = impulsesList[0].currentColor;    //this var will hold the summed colors of a list of impulses
+        for (var i = 1; i < impulsesList.length; i++) {         //going over the whole list of impulses
+                addColors(newImpulsesColor, impulsesList[i].currentColor);      //and adding them to newImpulsesColor
+        }
+        return capColorBrightness(newImpulsesColor, [255, 255, 255]);   //returning a brightness-capped sum of all the impulses' colors
+}
+
+/*function OLDfindColorOfImpulsesAffectingCell(cell ,impulsesList) {
+        var activeImpulses = findActiveImpulses(impulsesList),
+        impulsesAffectingCell = [];
+        if (activeImpulses.length === 0) {
+                return [0, 0, 0];
+        }
+        for (var i = 0; i < activeImpulses.length; i++) {
+                if (activeImpulses[i].colorGroupsAffected.length === 0) {
+                        return [0, 0, 0];
+                }
+                for (var k = 0; k < activeImpulses[i].colorGroupsAffected.length; k++) {
+                        if (activeImpulses[i].colorGroupsAffected[k] === cell.colorGroup) {
+                                impulsesAffectingCell.push(activeImpulses[i]);
+                        }
+                }
+        }
+        if (impulsesAffectingCell.length === 0) {
+                return [0, 0, 0];
+        }
+        return findImpulsesColor(impulsesAffectingCell);
+}*/
+
+function findColorOfImpulsesAffectingCell(cell, impulsesList) {
+        var impulsesAffectingCell = [],         //this will hold all impulses that are currently affecting this cell
+        activeImpulses = findActiveImpulses(impulsesList);      //this creates an array of active impulses
+        for (var i = 0; i < activeImpulses.length; i++) {              //checking all active impulses
+                if (activeImpulses[i].cellsAffected.indexOf(cell) >= 0) {      //checking all active impulses to see if they have the cell being draw in their array of cellsAffected
+                        impulsesAffectingCell.push(activeImpulses[i]);          //and if they do, adding the impulse to an array of impulses whose color will be combined and added to the cell's color
+                }
+        }
+        if (impulsesAffectingCell.length > 0) {         //if any active impulses were found to have this cell on their list of cells they affect (impulse.cellsAffected)
+                return capColorBrightness(findImpulsesColor(impulsesAffectingCell), [255, 255, 255]);   //this function returns the sum of their colors
+        } else {
+                return [0, 0, 0];       //otherwise this function will return no additional color
+        }
 }
 
 
@@ -231,10 +268,10 @@ function findNeighborsColor(neighborsList) {    //value passed here should be ce
         return divideColorByNumber(neighborsColor, neighborsList.length);
 }
 
-function findCellColor (cell, darkThreshold, warningThreshold) {
+function findCellColor (cell, darkThreshold, warningThreshold, impulsesList) {
         var colorSourcesList = [];
-        colorSourcesList.push(findOscillatorsColor(cell.oscillators), findNeighborsColor(cell.neighbors));//, findImpulsesColor(cell));
-        cell.color = divideColorByNumber(addAllColors(colorSourcesList), (colorSourcesList.length - 1));        //the "1" is findImpulsesColor, as impulses shouldn't figure into dividing/averaging a cell's final color--if it did, their brief life would lower the cell's overall brightness for whole said life (esp. during cooldown), and we want them to brighten the cell for their whole life
+        colorSourcesList.push(findOscillatorsColor(cell.oscillators), findNeighborsColor(cell.neighbors), findColorOfImpulsesAffectingCell(cell, impulsesList));
+        cell.color = divideColorByNumber(addAllColors(colorSourcesList), (colorSourcesList.length - 1));        //the "1" is findColorOfImpulsesAffectingCell, as impulses shouldn't figure into dividing/averaging a cell's final color--if it did, their brief life would lower the cell's overall brightness for whole said life (esp. during cooldown), and we want them to brighten the cell for their whole life
         if (averageBrightness(cell.color) < darkThreshold) {    //if cell brightness is under dark threshold, then
                 cell.color = [0, 0, 0];                                 //make cell black
         //} else { if (averageBrightness(cell.color) <= warningThreshold) {

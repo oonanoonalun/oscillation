@@ -1,9 +1,9 @@
 //DRAWING CELLS
-function drawCell(cell) {
+function drawCell(cell, impulsesList, fallThresholdsList) {
         //whichCellIsBeingDrawn(cell);
         updateCellOscillators(cell.oscillators);
         addCellToImpulses(cell, impulses);
-        findCellColor(cell, fallThresholds[0], fallThresholds[1]);      //second argument is darkThreshold--anything <= this will be pure black; third is warningThreshold--anything under this but above the darkThreshold will be tinged red
+        findCellColor(cell, fallThresholdsList[0], fallThresholdsList[1], impulsesList);      //second argument is darkThreshold--anything <= this will be pure black; third is warningThreshold--anything under this but above the darkThreshold will be tinged red
         capColorBrightness(cell.color, [255, 255, 255]);     //this also rounds the numbers to integers
       //  if (cell == cells[140] && impulses[0] !== null) {
                 //console.log(cell.color);
@@ -61,8 +61,8 @@ function homeCellTestingOverlay(cell) {
 }
 
 
-function drawAllCells(cellsList) {
+function drawAllCells(cellsList, impulsesList, fallThresholdsList) {
         for (var i = 0; i < cellsList.length; i++) {       
-                drawCell(cellsList[i]);
+                drawCell(cellsList[i], impulsesList, fallThresholdsList);
         }
 }

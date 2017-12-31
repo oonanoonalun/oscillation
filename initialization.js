@@ -17,7 +17,7 @@ initializeArrayWithNulls(64, impulses);
 //makeCells(numberOfCells, cellsPerRow, cellsList, oscsPerCell, periodMin, periodMax, brightestColorMin, brightestColorMax, phase, inputScale, outputScale)
 //"inputScale" is how much a cell is affected by its neighbors' oscillators (oscillators in its cell.oscillators array), where "1" is equally to its own "native" oscillators
 //"outputScale" is how much a cell boosts its affect on its neighbors—-the inverse of "inputScale"
-makeCells(3072, 64, cells, 1, 75, 150, [0, 0, 0], [24, 24, 24], Math.random(), randomNumber(3, 6), randomNumber(3, 6));
+makeCells(3072, 64, cells, 1, 75, 150, [0, 0, 0], [55, 55, 55], Math.random(), randomNumber(3, 6), randomNumber(3, 6));
 //these sets of numberOfCells and cellsPerRow work for our 800 x 600 canvas (double the number of cells pers row = 4x the number of cells overall):
 //300, 20
 //768, 32

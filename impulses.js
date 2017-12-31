@@ -51,23 +51,15 @@ function addCellToImpulses(cell, impulsesList) {	//call this to see if a cell is
 	var activeImpulses = findActiveImpulses(impulsesList);	//check for active impulses in an array of impulses
 	if (activeImpulses.length > 0) {	//if there are any active impulses--maybe this is unnecessary?
 		for (var i = 0; i < activeImpulses.length; i++) {	//then check each one
-			if (compareColorGroupsBetweenCellAndImpulse(cell, activeImpulses[i]) === true && noDuplicateCells(cell, activeImpulses[i]) === true) {	//and see if the current cell belongs to a color group it affects && isn't already on the impulse's list of cells it affects
+			if (compareColorGroupsBetweenCellAndImpulse(cell, activeImpulses[i]) === true && isCellADuplicate(cell, activeImpulses[i]) === false) {	//and see if the current cell belongs to a color group it affects && isn't already on the impulse's list of cells it affects
 				activeImpulses[i].cellsAffected.push(cell);	//if they share a color group, add this cell to the impulse's list of cells it affects
 			}
 		}
 	}
 }
 
-function noDuplicateCells (cell, impulse) {
-	if (impulse.cellsAffected.length > 0) {	//if the impulse currently affects any cells.	//maybe this isn't necessary
-		for (var i = 0; i < impulse.cellsAffected.length; i++) {
-			if (cell === impulse.cellsAffected[i]) {	//if any of the cells in the impulse's array of cellsAffects is equal to the cell being tested
-				return false;							//then return false (i.e. "no duplicate cells" is not true)
-			} else {
-				return true;							//if no cells in the cellsAffected array are equal to the cells being tested then "no duplicate cells" is true
-			}
-		}
-	}
+function isCellADuplicate(cell, impulse) {
+	return impulse.cellsAffected.indexOf(cell) >= 0;
 }
 
 function compareColorGroupsBetweenCellAndImpulse(cell, impulse) {	//return "true" if an impulse influences a colorGroup to which a cell belongs

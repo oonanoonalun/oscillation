@@ -38,9 +38,6 @@ function moveHomeCellWithButtons() {
 
 
 
-function bombBright(cell) {
-        
-}
 
 function changePlayerState() {        //toWhichNeighbor should be passed 'cell.neighborX'
         $('body').on('keydown', function (event) {
@@ -57,9 +54,21 @@ function changePlayerState() {        //toWhichNeighbor should be passed 'cell.n
 
 function buttonsMakeImpulses() {
         $('body').on('keydown', function (event) {
-                if (event.which == W && impulses[0] === null) {
-                        impulses[0] = makeImpulse(70, 70, [95, 95, 95], [95, 95, 95], 15, 15, 23, 23, [0]);
+                if (event.which == Q && impulses[0] === null) {
+                        impulses[0] = makeImpulse(70, 70, [127, 127, 127], [95, 95, 95], 15, 15, 23, 23, [0]);
                 }
+                if (event.which == W && impulses[1] === null) {
+                        impulses[0] = makeImpulse(70, 70, [127, 127, 127], [95, 95, 95], 15, 15, 23, 23, [1]);
+                }
+                if (event.which == E && impulses[2] === null) {
+                        impulses[0] = makeImpulse(70, 70, [127, 127, 127], [95, 95, 95], 15, 15, 23, 23, [2]);
+                }
+                if (event.which == R && impulses[3] === null) {
+                        impulses[0] = makeImpulse(70, 70, [127, 127, 127], [95, 95, 95], 15, 15, 23, 23, [3]);
+                }                
+                if (event.which == C && impulses[4] === null) {
+                        impulses[0] = makeImpulse(70, 70, [127, 127, 127], [95, 95, 95], 15, 15, 23, 23, [4]);
+                } 
         });
 }
 
